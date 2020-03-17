@@ -34,8 +34,6 @@ Take notes using this note taker application. Create a new note and give it a ti
 1. Navigate to https://kcbobbe-note-taker-express.herokuapp.com/
 2. Follow steps 3-5 above.
 
-![CLI](images/cli.png)
-
 ## Contributors
-1. Katie Bobbe -- Back-end
-2. Template files from instructor -- front end only
+1. Katie Bobbe -- back-end
+2. Template files from instructor -- front-end only
