@@ -1,8 +1,8 @@
-let notes = require("../db/db.json")
 const fs = require("fs");
 
 
 module.exports = function(app){
+  let notes = require("../db/db.json")
 
   app.get("/api/notes", (req, res)=>{
     return res.json(notes)
@@ -24,7 +24,11 @@ module.exports = function(app){
 
   app.post("/api/notes", (req, res) => {
     const newNote = req.body;
-    newNote.id = (notes[notes.length-1].id + 1);
+    if (notes.length === 0){
+      newNote.id = 1
+    } else {
+      newNote.id = (notes[notes.length-1].id + 1);
+    }
     notes.push(newNote);
     let jsonNotes = JSON.stringify(notes)
     fs.writeFile("./db/db.json", jsonNotes, function(err) {
