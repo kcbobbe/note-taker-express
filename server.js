@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 // link to json db -- right now called notes
-const notes = require("./db/db.json")
+let notes = require("./db/db.json")
 //html routes
 
 app.get("/", (req, res)=>{
@@ -41,13 +41,18 @@ app.get("/api/notes/:id", (req, res) => {
   return res.json(false)
 })
 
-let uniqueID = 1;
 
 app.post("/api/notes", (req, res) => {
   const newNote = req.body;
-  uniqueID++;
-  newNote.id = uniqueID;
+  newNote.id = (notes[notes.length-1].id + 1);
   notes.push(newNote);
+  let jsonNotes = JSON.stringify(notes)
+  fs.writeFile("./db/db.json", jsonNotes, function(err) {
+    if (err) {
+      return console.log(err);
+    }
+    console.log("Success!");
+  })
   res.json(true)
 })
 
@@ -57,9 +62,17 @@ app.delete("/api/notes/:id", (req, res) => {
   notes.forEach((n, index) => {
     if(id == n.id){
       notes.splice(index,1)
+      const notesCopy = notes.slice();
+      let jsonNotes = JSON.stringify(notesCopy)
+      fs.writeFile("./db/db.json", jsonNotes, function(err) {
+        if (err) {
+          return console.log(err);
+        }
+        console.log("Success!");
+      })
+
     }
   })
-
   res.json(true);
 })
 
